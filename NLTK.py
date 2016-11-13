@@ -1,7 +1,8 @@
 import openpyxl
 import nltk
 from nltk.corpus import stopwords
-from nltk.stem.lancaster import LancasterStemmer
+#from nltk.stem.snowball import SnowballStemmer
+#from nltk.stem.lancaster import LancasterStemmer
 from nltk.tokenize import RegexpTokenizer
 
 stop_words = set(stopwords.words("english"))
@@ -9,11 +10,11 @@ wb = openpyxl.load_workbook('clean_data.xlsx')
 sheet = wb.get_sheet_by_name("Sheet1")
 dataStr = wb.get_sheet_by_name("data")
 matrix = wb.get_sheet_by_name("matrix")
-#ps = LancasterStemmer()
+#ps = SnowballStemmer("english")
 regex_token = RegexpTokenizer(r'\w+')
 unique_word_list = []
 
-
+#4481
 for x in range(1, 4481):
     print(x)
     sentence = sheet["D" + str(x)].value
@@ -24,16 +25,21 @@ for x in range(1, 4481):
         if w not in stop_words:
             filtered_sentence_stopwords.append(w)
             unique_word_list.append(w)
+    filtered_sentence_stopwords.sort()
 
     print(filtered_sentence_stopwords)
     #sentence after stemming
     #filtered_sentence_stemmed = []
     #for stem_words in filtered_sentence_stopwords:
-        #filtered_sentence_stemmed.append(ps.stem(stem_words))
-    #print(filtered_sentence_stemmed)
+       # filtered_sentence_stemmed.append(ps.stem(stem_words))
+        #unique_word_list.append(ps.stem(stem_words))
 
-    #tagged = nltk.pos_tag(filtered_sentence_stopwords)
-    #split_string = str(tagged)
+    #filtered_sentence_stemmed = list(set(filtered_sentence_stemmed))
+    #filtered_sentence_stemmed.sort()
+    print(filtered_sentence_stopwords)
+
+    tagged = nltk.pos_tag(filtered_sentence_stopwords)
+    split_string = str(tagged)
     count = 3
     length = len(filtered_sentence_stopwords)
     dataStr.cell(row=1, column=x).value = sheet["B" + str(x)].value
@@ -61,13 +67,11 @@ for x in range(1,4481):
 
 discipline_list = list(set(discipline_list))
 #discipline_list.sort()
-print(discipline_list)
 count_y = 2
 for item in discipline_list:
     matrix.cell(row=1, column=count_y).value = str(item)
-    print(matrix.cell(row=1, column=count_y).value)
     count_y = count_y + 1
-wb.save('clean_ data.xlsx')
+wb.save('clean_data_test.xlsx')
 
 
 
