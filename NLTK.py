@@ -46,9 +46,10 @@ for x in range(1, 4481):
             original_word_list[ps.stem(stem_words)] = value_list
 
         else:
+            original_word_list[ps.stem(stem_words)] = list(set(original_word_list[ps.stem(stem_words)]))
             original_word_list[ps.stem(stem_words)].append(stem_words)
 
-        print(original_word_list[ps.stem(stem_words)])
+
         filtered_sentence_stemmed.append(ps.stem(stem_words))
         unique_word_list.append(ps.stem(stem_words))
 
@@ -81,6 +82,7 @@ for x in range(1, 4481):
 
 
 #finding unique words
+print(original_word_list)
 unique_word_list = list(set(unique_word_list))
 unique_word_list.sort()
 count_x = 2
